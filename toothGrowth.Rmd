@@ -1,0 +1,34 @@
+---
+title: "Tooth Growth in Guinea Pigs"
+author: "Jake"
+date: "April 29, 2016"
+output: html_document
+---
+
+In this report we will be making some basic inferential data analysis on the ToothGrowth dataset. The ToothGrowth data records the length of teeth in each of 10 guinea pigs at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) with each of two delivery methods (orange juice or ascorbic acid).
+
+First things first, we install the necessary pakages and load the dataset.
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(datasets)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+
+#loading the data
+data("ToothGrowth")
+```
+
+To get a broad overview of the data we are dealing with here we use the "str" function in R
+```{r}
+str(ToothGrowth)
+```
+
+What we are interested in is the length of a guinea pigs tooth as a function of dose level and delivery method. In order to visualize the data we separate the data into two plots, one for the orange juice (OJ) delevery method and another for the ascorbic acid (VC) delivery.
+```{r}
+ggplot(ToothGrowth, aes(dose, len)) + geom_point() + facet_grid(~ supp)
+```
+
+Already here you can draw some conclusions and comparisons from the data. Note that there seems to be a correlation between the dosage level and length of a guinea pigs tooth, this can be seen in both delevery types. Note also that for the 0.5mg and 1.0mg doseage levels the tooth lengths differ noticeably between delivery methods. At the 2.0mg level the differences are harder to distinguish as there is wide variablity in the VC delevery method results.
+
+
+

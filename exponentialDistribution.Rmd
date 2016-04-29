@@ -1,0 +1,48 @@
+---
+title: "Exploring the Exponential Distribution"
+author: "Jake"
+date: "April 29, 2016"
+#output: pdf_document
+output: html_document
+---
+
+In this assignment we are investigating the exponential distribution by simulating it in R and comparing it with the Central Limit Theorem (CLT). The exponential distribution has these characteristics: Its mean is 1/lambda and the standard deviation is also 1/lambda. We run a thousand simulations (achieved via the R function rexp(n, lambda)) investigating the distribution of averages of 40 exponentials.   
+
+To begin, we set the parameters: "n" is the number of exponential samples we are averaging over. "lamda", described above, is a parameter of the exponential function. "numSims" is the number of simulations, specified in the assignment question. Finally we set the seed for consistancy and reproducibilty.  
+
+```{r}
+n <- 40
+lamda <- 0.2
+numSims <- 1000
+set.seed(0)
+```
+
+Below we take 40 random samples of of the exponential, take the mean, store it in the vector "meanSimExp" and repeat this 1000 times. We take a histogram of the results.
+```{r}
+meanSimExp <- NULL
+for (i in 1 : numSims) meanSimExp <- c(meanSimExp, mean(rexp(n,lamda)))
+hist(meanSimExp, col = "grey")
+```
+
+The histogram shows the frequency of the number which results from takking the average of 40 samples of the exponential. What is immediately seen is that the curve "looks" normally distributed with most values grouping around 5 and quickely reducing in frequency either side of 5. In fact we can calculate the mean of the distribution to be `r mean(meanSimExp)` which agrees closely with the theoretical value of 1/lamda = 1/0.2 = 5. It can be shown by running larger number of simulations that the calculated mean converges closer and closer to the theorectical one.
+
+In the next part of the assignment we study the variance of the exponential samples. Running similiar code to that above we can produce a histogram of the variance found in 1000 instances of 40 random samples.
+```{r}
+varianceSimExp <- NULL
+for (i in 1 : numSims) varianceSimExp <- c(varianceSimExp, var(rexp(n,lamda)))
+hist(varianceSimExp, prob=TRUE, col = "grey")
+```
+
+We again get the familiar shape of a bell curve except this time congregating around 25 which is the theoretical value for the exponential distribution, i.e. (1/lamda)^2 = 25. We find the mean of this distribution to be `r mean(varianceSimExp)`. Again, using more simulations it would be possible to converge to the theoretical result.
+
+Finally in this report we look at the difference between the distribution of a large collection of random exponentials and the distribution of a large collection of averages of 40 exponentials. Consider the histograms shown below.
+
+```{r}
+par(mfrow=c(1,2)) 
+hist(rexp(n,lamda), col = "grey")
+hist(meanSimExp, col = "grey")
+#lines(density(meanSimExp), col="blue", lwd=2)
+#lines(density(rexp(n,lamda)), col="green", lwd=2)
+```
+
+On the left we have the distribution of a large number of random exponentials and it is quite clear, given that it is not bell shaped, that it is not a normal distribution. On the right we compare the histogram of means from above and note again it's bell like shape. We can be sure that it is normally distributed by the central limit thereom. In fact, these histograms make a clear case for the central limit thereom, which states that the mean of a sufficiently large number of independent random variables, each with a well defined expected value and variance, will be approximetely normally distributed - regardless of the underlying distribution.
